@@ -13,6 +13,10 @@
 		618F509A1B4BE22800D9DB9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 618F50991B4BE22800D9DB9A /* Images.xcassets */; };
 		618F509D1B4BE22800D9DB9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 618F509B1B4BE22800D9DB9A /* LaunchScreen.xib */; };
 		618F50A91B4BE22800D9DB9A /* Swift_UIPageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F50A81B4BE22800D9DB9A /* Swift_UIPageViewTests.swift */; };
+		618F50B31B4BE27200D9DB9A /* KeleUIPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F50B21B4BE27200D9DB9A /* KeleUIPageView.swift */; };
+		618F50B41B4BE27200D9DB9A /* KeleUIPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F50B21B4BE27200D9DB9A /* KeleUIPageView.swift */; };
+		618F50B61B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F50B51B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift */; };
+		618F50B71B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618F50B51B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +40,8 @@
 		618F50A21B4BE22800D9DB9A /* Swift_UIPageViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Swift_UIPageViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		618F50A71B4BE22800D9DB9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		618F50A81B4BE22800D9DB9A /* Swift_UIPageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_UIPageViewTests.swift; sourceTree = "<group>"; };
+		618F50B21B4BE27200D9DB9A /* KeleUIPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeleUIPageView.swift; sourceTree = "<group>"; };
+		618F50B51B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeleUIPageViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +89,8 @@
 				618F50991B4BE22800D9DB9A /* Images.xcassets */,
 				618F509B1B4BE22800D9DB9A /* LaunchScreen.xib */,
 				618F50901B4BE22800D9DB9A /* Supporting Files */,
+				618F50B21B4BE27200D9DB9A /* KeleUIPageView.swift */,
+				618F50B51B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift */,
 			);
 			path = Swift_UIPageView;
 			sourceTree = "<group>";
@@ -213,7 +221,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				618F50951B4BE22800D9DB9A /* ViewController.swift in Sources */,
+				618F50B61B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift in Sources */,
 				618F50931B4BE22800D9DB9A /* AppDelegate.swift in Sources */,
+				618F50B31B4BE27200D9DB9A /* KeleUIPageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,6 +231,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				618F50B71B4BEEDD00D9DB9A /* KeleUIPageViewDelegate.swift in Sources */,
+				618F50B41B4BE27200D9DB9A /* KeleUIPageView.swift in Sources */,
 				618F50A91B4BE22800D9DB9A /* Swift_UIPageViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
