@@ -10,12 +10,25 @@ import UIKit
 
 class MyPageView: UIView {
     
+    let txt:UILabel!
     
     override init(frame: CGRect) {
         
+        txt = UILabel(frame: frame)
+
         super.init(frame:frame)
         
         render("2.jpg")
+        
+        addSubview(txt)
+
+        
+        
+    }
+    
+    func setTxt(title:String)
+    {
+        txt.text = title
     }
     
     func render(url:String)

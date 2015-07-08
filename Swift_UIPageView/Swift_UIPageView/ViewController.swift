@@ -31,7 +31,7 @@ class ViewController: UIViewController, KeleUIPageViewDelegate {
     
     func onPageChange(index: Int, pageView: UIView)
     {
-        
+        (pageView as! MyPageView).setTxt(String(index))
     }
     
     func getTotalPage() -> Int {
