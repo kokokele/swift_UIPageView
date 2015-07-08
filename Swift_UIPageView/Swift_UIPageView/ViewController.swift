@@ -8,16 +8,38 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, KeleUIPageViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        var pageView:KeleUIPageView = KeleUIPageView(frame: self.view.frame)
+        pageView.delegate = self
+        pageView.render()
+        
+        self.view.addSubview(pageView)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    
+    
+    func onPageChange(index: Int, pageView: UIView)
+    {
+        
+    }
+    
+    func getTotalPage() -> Int {
+        return 6
+    }
+    
+    func getView() -> UIView {
+        return MyPageView(frame: self.view.frame)
     }
 
 

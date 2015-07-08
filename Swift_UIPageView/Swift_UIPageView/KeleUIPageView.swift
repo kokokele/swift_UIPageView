@@ -34,25 +34,26 @@ class KeleUIPageView: UIView, UIScrollViewDelegate {
     
     private let _frame:CGRect!
     
-    
     private var _page:Int = 1
+    private var _pageFlag:Int = 1
     private var _pageChanged:Bool =  false
     private var _lastContentOffset:CGFloat = 0
     private var _direction: ScrollDirection = .None
     
-    private var _viewCache = [KeleUIPageViewDelegate]()
+    private var _viewCache:[UIView]! = Array()
+    
+    
+    private var _startX:CGFloat = 0.0
     
     
     
-    init() {
-        
-        var frame = CGRectMake(0, 30, 320, 8 * 320 / 7)
-        
+    override init(frame: CGRect) {
+
         
         _frame = frame
         _scrollView = UIScrollView(frame:frame)
         super.init(frame:frame)
-        
+
         // Setup Scroll View.
         _scrollView.contentSize = CGSizeMake(frame.width * 3, frame.height)
         _scrollView.showsHorizontalScrollIndicator = false
@@ -100,28 +101,22 @@ class KeleUIPageView: UIView, UIScrollViewDelegate {
         let bounds = UIScreen.mainScreen().bounds
         
         
-        for i in 0...2 {
-            let view = delegate?.getView()//(frame: CGRectMake(frame.width * CGFloat(i), 0, frame.width, frame.height))
-           // _viewCache[i] = view
-            view!.tag = i
+        for i in 0...2
+        {
+            let view = delegate?.getView()
+            let frame =  CGRectMake(frame.width * CGFloat(i), 0, frame.width, frame.height)
+            view?.frame  = frame
+            _viewCache.append(view!)
+            
+            view?.tag = i
             _scrollView.addSubview(view!)
             
-            
-            if i == 0 {
-                
-                delegate?.onPageChange(1, pageView: view!)
-                
-            } else if i == 1 {
-                
-                delegate?.onPageChange(1, pageView: view!)
-            } else {
-                
-                delegate?.onPageChange(1, pageView: view!)
-            }
         }
         
+        delegate?.onPageChange(2, pageView: _viewCache[1])
         
-        _scrollView.scrollRectToVisible(CGRectMake(frame.width, 0, frame.width, frame.height), animated:false)
+        
+        //_scrollView.scrollRectToVisible(CGRectMake(frame.width, 0, frame.width, frame.height), animated:false)
         
     }
     
@@ -133,27 +128,32 @@ class KeleUIPageView: UIView, UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView)
     {
         
-        let width = scrollView.frame.width
+//        let width = scrollView.frame.width
         
-        let page  = Int(floor((_scrollView.contentOffset.x - width/2) / width) + 1)
-        if page !=  _page {
-            
-            _page = page
-            
-            if !self._pageChanged {
-                
-                self._pageChanged = true
-                
-            } else {
-                
-                self._pageChanged = false
-            }
-        }
+//        let pageFlag  = Int(floor((_scrollView.contentOffset.x - width/2) / width) + 1)
+//        if pageFlag !=  _pageFlag {
+//            
+//            _pageFlag = pageFlag
+//            
+//            if !self._pageChanged {
+//                
+//                self._pageChanged = true
+//                
+//            } else {
+//                
+//                self._pageChanged = false
+//            }
+//        }
+//        
+        
+        
         
         
         if _scrollView.contentOffset.y != 0 {
             _scrollView.contentOffset = CGPointMake(_scrollView.contentOffset.x, 0)
         }
+        
+        //println("\(_lastContentOffset):\(_scrollView.contentOffset.x)")
         
         if _lastContentOffset > scrollView.contentOffset.x {
             _direction = .Right
@@ -161,42 +161,121 @@ class KeleUIPageView: UIView, UIScrollViewDelegate {
             _direction = .Left
         }
         
-        _lastContentOffset = _scrollView.contentOffset.x
+        
         
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView)
     {
+//        println("scrollViewWillBeginDragging")
+        
+        _pageChanged = false
+        
+        _startX = _scrollView.contentOffset.x
+    }
+    
+    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    {
+//        println("scrollViewWillEndDragging:")
+        
+        
+        let width = scrollView.frame.width
+        
+        let ox = _scrollView.contentOffset.x
+        
+        
+        println("\(ox), \(abs(ox  - _startX)), \(width / 4)")
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool)
+    {
+        //println("scrollViewDidEndDragging:")
+        
+        let width = scrollView.frame.width
+
+        let ox = _scrollView.contentOffset.x
+        
+        
+        println("\(ox), \(abs(ox  - _startX)), \(width / 4)")
+        
+        if  Int(abs(ox  - _startX)) > Int((width / 4))
+        {
+            _pageChanged = true
+        }
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView)
     {
         fit()
         
-        //println("scrollViewDidEndDecelerating:\(_pageChanged)")
+        println("scrollViewDidEndDecelerating:\(_pageChanged)")
         
     }
     
     private func fit()
     {
-        if _pageChanged{
+        let total:Int! = delegate?.getTotalPage()
+
+        
+        if _pageChanged
+        {
             
-            var temp:KeleUIPageViewDelegate!
-            
+            var temp:UIView!
             //----------------调整容器顺序-------------
             if _direction == .Left {
                 
-                temp = _viewCache[0]
-                _viewCache[0] = _viewCache[1]
-                _viewCache[1] = _viewCache[2]
-                _viewCache[2] = (temp as? KeleUIPageViewDelegate)!
+               
+
+                if _page < total  {
+                    
+                    _page++
+                    
+                    if _page != total {
+                        
+                        if _page == 2
+                        {
+                            delegate?.onPageChange(3, pageView: _viewCache[2])
+                        } else {
+                            temp = _viewCache[0]
+                            _viewCache[0] = _viewCache[1]
+                            _viewCache[1] = _viewCache[2]
+                            _viewCache[2] = temp
+                            
+                            
+                            resetFrame()
+                        }
+                       
+                    }
+                    
+                    
+                }
+                
                 
             } else {
                 
-                temp = _viewCache[2]
-                _viewCache[2] = _viewCache[1]
-                _viewCache[1] = _viewCache[0]
-                _viewCache[0] = (temp as? KeleUIPageViewDelegate)!
+                
+                if _page > 1 {
+                    _page--
+                    
+                    if _page != 1 && _page != total - 1
+                    {
+                        
+                        temp = _viewCache[2]
+                        _viewCache[2] = _viewCache[1]
+                        _viewCache[1] = _viewCache[0]
+                        _viewCache[0] = temp
+                        
+                        
+                        resetFrame()
+                        
+                    }
+                    
+                    
+                }
+                
+
+                
+                
                 
                 
             }
@@ -209,9 +288,31 @@ class KeleUIPageView: UIView, UIScrollViewDelegate {
             
         }
         
-        self._pageChanged = false
         self._direction = .None
         
+        _lastContentOffset = _scrollView.contentOffset.x
+        
+        println("page\(_page)")
+        println("-----------------------")
+        
+    }
+    
+    private func resetFrame()
+    {
+        for i in 0...2
+        {
+            
+            let frame = CGRectMake(_frame.width * CGFloat(i), 0, _frame.width, _frame.height)
+            
+            let view:UIView = _viewCache[i]
+            view.frame = frame
+        }
+        
+        _scrollView.scrollRectToVisible(CGRectMake(frame.width, 0, frame.width, frame.height), animated:false)
+        
+        println("end:", Int(_scrollView.contentOffset.x))
+
+
     }
     
     

@@ -13,6 +13,8 @@ protocol KeleUIPageViewDelegate{
     
     func getView()->UIView
     
+    func getTotalPage()->Int
+    
     func onPageChange(index:Int, pageView:UIView)
     
 }
